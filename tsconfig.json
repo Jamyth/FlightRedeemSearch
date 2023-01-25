@@ -3,7 +3,10 @@
     "include": [],
     "references": [
         {
-            "path": "./config/tsconfig.src.json"
+            "path": "./config/tsconfig.bin.json"
+        },
+        {
+            "path": "./config/tsconfig.web.json"
         },
         {
             "path": "./config/tsconfig.script.json"
