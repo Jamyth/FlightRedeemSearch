@@ -36,6 +36,7 @@ export class FlightSearcherCLI {
             this.analyzeFlights();
         } catch (error) {
             console.info("Terminating...");
+            console.info(error);
             process.exit();
         }
     }
@@ -98,8 +99,8 @@ export class FlightSearcherCLI {
         console.info("TO           : ", info.to);
         console.info("CABIN CLASS  : ", info.cabinClass);
         console.info("PASSENGERS   : ", info.passengers);
-        this.blankLn();
         console.info("Flights Found: ", flights.length);
+        this.blankLn();
         flights.forEach((flight) => this.formatFlight(flight));
     }
 

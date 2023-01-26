@@ -59,11 +59,11 @@ export class FlightPlanAnalyzer {
                 if (hasFlight) {
                     result.push({
                         departure: {
-                            date: start,
+                            date: this.chunkDate(start).join("/"),
                             availability: this.departureData[start] as AvailabilityTypeView,
                         },
                         arrival: {
-                            date: key,
+                            date: this.chunkDate(key).join("/"),
                             availability: this.arrivalData[key] as AvailabilityTypeView,
                         },
                         days: i,

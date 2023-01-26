@@ -118,10 +118,10 @@ export class FlightSearcher {
             arriveOn,
         );
 
-        const departureFlights = departData.availabilities.std.filter(
-            (_) => _.availability !== AvailabilityTypeView.NA,
-        );
-        const arrivalFlights = arrivalData.availabilities.std.filter((_) => _.availability !== AvailabilityTypeView.NA);
+        const departureFlights =
+            departData?.availabilities?.std?.filter((_) => _.availability !== AvailabilityTypeView.NA) || [];
+        const arrivalFlights =
+            arrivalData?.availabilities?.std?.filter((_) => _.availability !== AvailabilityTypeView.NA) || [];
 
         const mapper = (item: FlightAvailability): [string, AvailabilityTypeView] => {
             return [item.date, item.availability];
