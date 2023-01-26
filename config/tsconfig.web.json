@@ -6,14 +6,16 @@
 
         "sourceMap": true,
         "inlineSources": true,
-        "baseUrl": "../src/web",
+        "baseUrl": "../src/web/src",
 
         "experimentalDecorators": true,
+
+        "jsx": "react",
 
         "importsNotUsedAsValues": "preserve",
         "isolatedModules": true,
         "paths": {
-            "@core/*": ["../core/*"]
+            "@core/*": ["../../core/*"]
         }
     },
     "include": ["../src/core", "../src/web"]
