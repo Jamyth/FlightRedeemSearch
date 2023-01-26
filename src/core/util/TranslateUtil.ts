@@ -5,7 +5,7 @@ export const CabinClassTranslationMap: Record<string, CabinClass> = {
     Business: CabinClass.BUSINESS,
     "Premium Economy": CabinClass.PREMIUM_ECONOMY,
     Economy: CabinClass.ECONOMY,
-};
+} as const;
 
 function cabinClass(type: CabinClass): string {
     switch (type) {

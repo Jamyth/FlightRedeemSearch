@@ -48,9 +48,14 @@ export class FlightPlanAnalyzer {
         for (const start of departureList) {
             for (let i = this.minDay; i <= this.maxDay; i++) {
                 const [year, month, day] = this.chunkDate(start);
-                const shouldNextMonth = day + i > 31;
+                const daysInCurrentMonth = new Date(year, month, 0).getDate();
+                const shouldNextMonth = day + i > daysInCurrentMonth;
                 const shouldNextYear = month + 1 > 12;
-                const newDay = (day + i) % 31;
+                const dateSum = day + i;
+                // When i = 31, & date is 30, remainder would be 1 if daysInCurrentMonth is 30
+                // simply - daysInCurrentMonth will get the exact date
+                const newDay =
+                    dateSum / daysInCurrentMonth > 1 ? dateSum - daysInCurrentMonth : (day + i) % daysInCurrentMonth;
                 const newMonth = shouldNextMonth ? (month + 1) % 12 : month;
                 const newYear = shouldNextYear ? year + 1 : year;
                 const key = `${newYear}${newMonth.toString().padStart(2, "0")}${newDay.toString().padStart(2, "0")}`;

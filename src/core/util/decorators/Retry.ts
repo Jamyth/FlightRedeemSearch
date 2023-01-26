@@ -1,3 +1,5 @@
+import { PromiseUtil } from "@iamyth/util";
+
 export function Retry(time: number = 3): MethodDecorator {
     let retried = 0;
 
@@ -16,6 +18,9 @@ export function Retry(time: number = 3): MethodDecorator {
                     retried++;
                     if (retried > 3) {
                         throw error;
+                    } else {
+                        console.info("Encountered error, retrying");
+                        await PromiseUtil.sleep(1000);
                     }
                 }
             }

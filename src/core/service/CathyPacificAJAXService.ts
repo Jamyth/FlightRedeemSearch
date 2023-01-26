@@ -20,16 +20,22 @@ export class CathyPacificAJAXService {
         );
     }
 
-    static getFlightCabinInfo(from: string, to: string): Promise<GetFlightCabinInfoAJAXResponse> {
-        return ajax(
+    static async getFlightCabinInfo(from: string, to: string): Promise<GetFlightCabinInfoAJAXResponse> {
+        const data = await ajax(
             "GET",
             `https://api.cathaypacific.com/afr/searchpanel/searchoptions/en.${from}.${to}.ow.std.CX.json`,
             {},
             null,
         );
+
+        try {
+            return JSON.parse(data as any);
+        } catch (error) {
+            return data as GetFlightCabinInfoAJAXResponse;
+        }
     }
 
-    static availability(
+    static async availability(
         from: string,
         to: string,
         cabinClass: CabinClass,
@@ -37,11 +43,17 @@ export class CathyPacificAJAXService {
         departOn: string,
         arriveOn: string,
     ): Promise<AvailabilityAJAXResponse> {
-        return ajax(
+        const data = await ajax(
             "GET",
             `https://api.cathaypacific.com/afr/search/availability/en.${from}.${to}.${cabinClass}.CX.${passengers}.${departOn}.${arriveOn}.json`,
             {},
             null,
         );
+
+        try {
+            return JSON.parse(data as any);
+        } catch (error) {
+            return data as AvailabilityAJAXResponse;
+        }
     }
 }
