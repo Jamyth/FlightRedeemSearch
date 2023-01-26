@@ -1,4 +1,5 @@
 import { CabinClass, FlightSearcher, CabinClassTranslationMap, FlightPlanAnalyzer, FlightInfo } from "../core";
+import { PromiseUtil } from "@iamyth/util";
 import { Spinner } from "./util/decorator/Spinner";
 import { EnquirerUtil } from "./util/EnquirerUtil";
 
@@ -106,7 +107,7 @@ export class FlightSearcherCLI {
 
     @Spinner("Searching Available Flights...")
     private async searchFlights() {
-        const flights = await this.fs.getFlightAvailability();
+        const [flights] = await Promise.all([this.fs.getFlightAvailability(), PromiseUtil.sleep(1000)]);
         if (!flights) {
             throw new Error("Flights not found...");
         }
