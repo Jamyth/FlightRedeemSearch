@@ -139,7 +139,7 @@ export class FlightSearcherCLI {
             return;
         }
         await PromiseUtil.sleep(1000);
-        const save = await EnquirerUtil.select("Do you want to export to .csv ?", ["Yes", "No"]);
+        const save = await EnquirerUtil.select("Do you want to export to .csv ?", ["Yes", "No"], "No");
 
         if (save === "No") {
             return;
@@ -151,7 +151,7 @@ export class FlightSearcherCLI {
 
         const cabinClasses = Object.keys(milesRequired) as CabinClass[];
         const cabinHeader = ["Miles Required", ...cabinClasses.map(TranslateUtil.cabinClass)].join(",");
-        const cabinInfo = ["", ...cabinClasses.map((_) => milesRequired[_])].join(",");
+        const cabinInfo = ["(Single Flight)", ...cabinClasses.map((_) => milesRequired[_])].join(",");
 
         const flightHeaders = ["From (Seats Avail.)", "To (Seats Avail.)", "Days", "Depart On", "Arrive On"].join(",");
         const flightInfo = this.analyzedFlights.map((flight) => {
@@ -168,7 +168,7 @@ export class FlightSearcherCLI {
     }
 
     private async promptNewSearch() {
-        const createNewSearch = await EnquirerUtil.select("Do you want to create a new search ?", ["Yes", "No"]);
+        const createNewSearch = await EnquirerUtil.select("Do you want to create a new search ?", ["Yes", "No"], "No");
         const yes = createNewSearch === "Yes";
 
         if (yes) {
@@ -202,6 +202,11 @@ export class FlightSearcherCLI {
 
     @Spinner("Initializing Flight Searcher...")
     private async initFlightSearcher() {
+        // TODO/Jamyth optimization
+        // if (this.flightSearcher !== null) {
+        //     return;
+        // }
+
         const fs = new FlightSearcher();
         await fs.init();
         this.flightSearcher = fs;
