@@ -14,7 +14,7 @@ export class FlightPlanAnalyzer {
 
     constructor() {
         this.minDay = 1;
-        this.maxDay = 31;
+        this.maxDay = 180;
         this.departureData = null;
         this.arrivalData = null;
     }
