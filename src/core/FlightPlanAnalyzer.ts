@@ -1,3 +1,4 @@
+import { DateUtil } from "./util/DateUtil";
 import { AvailabilityAJAXResponse$Availability as Availability, AvailabilityTypeView } from "./type/api";
 
 export interface FlightInfo {
@@ -44,11 +45,11 @@ export class FlightPlanAnalyzer {
         const arrivalList = new Set(Object.keys(this.arrivalData));
 
         const result: FlightInfo[] = [];
-
+  
         for (const start of departureList) {
             for (let i = this.minDay; i <= this.maxDay; i++) {
-                const [year, month, day] = this.chunkDate(start);
-                const daysInCurrentMonth = new Date(year, month, 0).getDate();
+                const [year, month, day] = DateUtil.chunkDateString(start);
+                const daysInCurrentMonth = DateUtil.getDateOfTheMonth(year, month);
                 const shouldNextMonth = day + i > daysInCurrentMonth;
                 const shouldNextYear = month + 1 > 12;
                 const dateSum = day + i;
@@ -64,11 +65,11 @@ export class FlightPlanAnalyzer {
                 if (hasFlight) {
                     result.push({
                         departure: {
-                            date: this.chunkDate(start).join("/"),
+                            date: DateUtil.chunkDateString(start).join("/"),
                             availability: this.departureData[start] as AvailabilityTypeView,
                         },
                         arrival: {
-                            date: this.chunkDate(key).join("/"),
+                            date: DateUtil.chunkDateString(key).join("/"),
                             availability: this.arrivalData[key] as AvailabilityTypeView,
                         },
                         days: i,
@@ -77,16 +78,5 @@ export class FlightPlanAnalyzer {
             }
         }
         return result.sort((a, b) => a.days - b.days);
-    }
-
-    private chunkDate(date: string): [number, number, number] {
-        const shape = [4, 2, 2];
-        let offset = 0;
-        const result: number[] = [];
-        shape.forEach((size) => {
-            result.push(parseInt(date.slice(offset, offset + size)));
-            offset += size;
-        });
-        return result as [number, number, number];
     }
 }

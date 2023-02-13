@@ -6,7 +6,7 @@ import type {
     GetFlightCabinInfoAJAXResponse,
 } from "../type/api";
 
-export class CathyPacificAJAXService {
+export class CathayPacificAJAXService {
     static getAirportOrigin(): Promise<GetAirportAJAXResponse> {
         return ajax("GET", "https://api.cathaypacific.com/redibe/airport/origin/en_HK/", {}, null);
     }

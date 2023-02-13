@@ -1,6 +1,6 @@
 import { ArrayUtil, DateUtil } from "@iamyth/util";
 import { TranslateUtil } from "./util/TranslateUtil";
-import { CathyPacificAJAXService } from "./service/CathyPacificAJAXService";
+import { CathayPacificAJAXService } from "./service/CathayPacificAJAXService";
 import {
     AvailabilityTypeView,
     CabinClass,
@@ -93,7 +93,7 @@ export class FlightSearcher {
             return;
         }
         const code = this.origin.airportCode;
-        const data = await CathyPacificAJAXService.getAirportDestination(code);
+        const data = await CathayPacificAJAXService.getAirportDestination(code);
         this.destinations = data.airports;
     }
 
@@ -102,7 +102,7 @@ export class FlightSearcher {
         if (!this.origin || !this.destination) {
             return;
         }
-        const data = await CathyPacificAJAXService.getFlightCabinInfo(
+        const data = await CathayPacificAJAXService.getFlightCabinInfo(
             this.origin.airportCode,
             this.destination.airportCode,
         );
@@ -121,7 +121,7 @@ export class FlightSearcher {
         const passengers = this.passengers;
         const departOn = this.parseDate(DateUtil.today("day-start"));
         const arriveOn = this.parseDate(DateUtil.daysAfterToday(180, "day-end"));
-        const departData = await CathyPacificAJAXService.availability(
+        const departData = await CathayPacificAJAXService.availability(
             from,
             to,
             cabinClass,
@@ -129,7 +129,7 @@ export class FlightSearcher {
             departOn,
             arriveOn,
         );
-        const arrivalData = await CathyPacificAJAXService.availability(
+        const arrivalData = await CathayPacificAJAXService.availability(
             to,
             from,
             cabinClass,
@@ -157,7 +157,7 @@ export class FlightSearcher {
 
     @Retry(3)
     private async getAirports() {
-        const data = await CathyPacificAJAXService.getAirportOrigin();
+        const data = await CathayPacificAJAXService.getAirportOrigin();
         this.airports = data.airports;
     }
 
