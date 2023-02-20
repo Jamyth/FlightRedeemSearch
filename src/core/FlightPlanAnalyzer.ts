@@ -7,10 +7,17 @@ export interface FlightInfo {
     days: number;
 }
 
+// TODO/Jamyth Apply design pattern
+/**
+ * Feature Request
+ * - start/end date
+ * - specify weekday
+ */
 export class FlightPlanAnalyzer {
     private minDay: number;
     private maxDay: number;
     private startDate: Date;
+    private endDate: Date;
     private departureData: Record<string, string> | null;
     private arrivalData: Record<string, string> | null;
 
@@ -18,6 +25,7 @@ export class FlightPlanAnalyzer {
         this.minDay = 1;
         this.maxDay = 180;
         this.startDate = DateUtil.today("day-start");
+        this.endDate = DateUtil.daysAfterToday(180, "day-start");
         this.departureData = null;
         this.arrivalData = null;
     }
@@ -32,6 +40,10 @@ export class FlightPlanAnalyzer {
 
     setStartDate(date: Date) {
         this.startDate = date;
+    }
+
+    setEndDate(date: Date) {
+        this.endDate = date;
     }
 
     setDepartureData(data: Record<string, string>) {
@@ -68,10 +80,11 @@ export class FlightPlanAnalyzer {
                     dateSum / daysInCurrentMonth > 1 ? dateSum - daysInCurrentMonth : (day + i) % daysInCurrentMonth;
                 const newMonth = shouldNextMonth ? (month + 1) % 12 : month;
                 const newYear = shouldNextYear ? year + 1 : year;
-                const key = `${newYear}${newMonth.toString().padStart(2, "0")}${newDay.toString().padStart(2, "0")}`;
+                const key = `${newYear}${DateUtil.zeroPad(newMonth)}${DateUtil.zeroPad(newDay)}`;
+                const endDate = new Date(DateUtil.chunkDateString(key).join("/"));
                 const hasFlight = arrivalList.has(key);
 
-                if (hasFlight) {
+                if (hasFlight && DateUtil.compare(endDate, this.endDate) !== "greater") {
                     result.push({
                         departure: {
                             date: DateUtil.chunkDateString(start).join("/"),

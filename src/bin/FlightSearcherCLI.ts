@@ -44,6 +44,7 @@ export class FlightSearcherCLI {
             if (this.enableAdvanceSearch) {
                 await this.promptDays();
                 await this.promptStartDate();
+                await this.promptEndDate();
             }
             await this.searchFlights();
             await this.analyzeFlights();
@@ -117,6 +118,11 @@ export class FlightSearcherCLI {
     private async promptStartDate() {
         const startingDate = await EnquirerUtil.date("What is your starting date ?", true);
         this.flightAnalyzer.setStartDate(startingDate);
+    }
+
+    private async promptEndDate() {
+        const returningDate = await EnquirerUtil.date("What is your returning date ?", true);
+        this.flightAnalyzer.setEndDate(returningDate);
     }
 
     private async analyzeFlights() {
