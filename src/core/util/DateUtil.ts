@@ -1,5 +1,4 @@
-import { DateUtil as IamythDateUtil } from "@iamyth/util";
-import { ArrayUtil } from "@iamyth/util";
+import { DateUtil as IamythDateUtil, ArrayUtil } from "@iamyth/util";
 
 function getDateOfTheMonth(year: number, month: number) {
     if (month > 12 || month <= 0) {
