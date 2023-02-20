@@ -12,6 +12,8 @@ export interface FlightInfo {
  * Feature Request
  * - start/end date
  * - specify weekday
+ *
+ * -> approach (strategy pattern, by profile (Return On Sunday, etc...))
  */
 export class FlightPlanAnalyzer {
     private minDay: number;
