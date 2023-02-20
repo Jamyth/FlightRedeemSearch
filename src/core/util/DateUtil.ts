@@ -13,8 +13,52 @@ function chunkDateString(dateString: string): [number, number, number] {
     return ArrayUtil.chunk(dateString.split(""), shape).map((_) => parseInt(_.join(""))) as [number, number, number];
 }
 
+function getDateKey(date: Date = new Date()) {
+    const year = date.getFullYear();
+    const month = zeroPad(date.getMonth() + 1);
+    const day = zeroPad(date.getDate());
+
+    return year + month + day;
+}
+
+function zeroPad(value: number) {
+    return value.toString().padStart(2, "0");
+}
+
+function compare(dateA: Date, dateB: Date): "greater" | "less" | "equal" {
+    const yearA = dateA.getFullYear();
+    const yearB = dateB.getFullYear();
+    const monthA = dateA.getMonth();
+    const monthB = dateB.getMonth();
+    const dayA = dateA.getDate();
+    const dayB = dateB.getDate();
+
+    if (yearA > yearB) {
+        return "greater";
+    } else if (yearB > yearA) {
+        return "less";
+    }
+
+    if (monthA > monthB) {
+        return "greater";
+    } else if (monthB > monthA) {
+        return "less";
+    }
+
+    if (dayA > dayB) {
+        return "greater";
+    } else if (dayB > dayA) {
+        return "less";
+    }
+
+    return "equal";
+}
+
 export const DateUtil = Object.freeze({
     ...IamythDateUtil,
     getDateOfTheMonth,
     chunkDateString,
+    getDateKey,
+    zeroPad,
+    compare,
 });

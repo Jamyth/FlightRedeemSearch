@@ -10,12 +10,14 @@ export interface FlightInfo {
 export class FlightPlanAnalyzer {
     private minDay: number;
     private maxDay: number;
+    private startDate: Date;
     private departureData: Record<string, string> | null;
     private arrivalData: Record<string, string> | null;
 
     constructor() {
         this.minDay = 1;
         this.maxDay = 180;
+        this.startDate = DateUtil.today("day-start");
         this.departureData = null;
         this.arrivalData = null;
     }
@@ -26,6 +28,10 @@ export class FlightPlanAnalyzer {
 
     setMaxDay(maxDay: number) {
         this.maxDay = maxDay;
+    }
+
+    setStartDate(date: Date) {
+        this.startDate = date;
     }
 
     setDepartureData(data: Record<string, string>) {
@@ -45,11 +51,14 @@ export class FlightPlanAnalyzer {
         const arrivalList = new Set(Object.keys(this.arrivalData));
 
         const result: FlightInfo[] = [];
-  
+
         for (const start of departureList) {
+            const [year, month, day] = DateUtil.chunkDateString(start);
+            const daysInCurrentMonth = DateUtil.getDateOfTheMonth(year, month);
+            if (DateUtil.compare(new Date(year, month - 1, day), this.startDate) === "less") {
+                continue;
+            }
             for (let i = this.minDay; i <= this.maxDay; i++) {
-                const [year, month, day] = DateUtil.chunkDateString(start);
-                const daysInCurrentMonth = DateUtil.getDateOfTheMonth(year, month);
                 const shouldNextMonth = day + i > daysInCurrentMonth;
                 const shouldNextYear = month + 1 > 12;
                 const dateSum = day + i;

@@ -15,6 +15,33 @@ interface NumberOptions {
     initial?: number;
 }
 
+async function date(message: string, optional = false) {
+    const placeholder = "MM/DD";
+    const key = "date";
+    const answer = await prompt({
+        type: "input",
+        name: key,
+        message: `${message} (${placeholder})`,
+        result: (value: string) => {
+            const year = new Date().getFullYear();
+            return `${year}/${value}`;
+        },
+        validate: (value: string) => {
+            if (!value && optional) {
+                return true;
+            }
+
+            if (/[0-9]{2}\/[0-9]{2}/.test(value)) {
+                return true;
+            }
+            return "Date Format should be MM/DD";
+        },
+    });
+    const value = (answer as any)[key];
+    console.info(value);
+    return new Date(value);
+}
+
 function autocomplete(message: string, choices: string[], initial?: number) {
     return new _AutoComplete({
         name: "autocomplete",
@@ -64,4 +91,5 @@ export const EnquirerUtil = Object.freeze({
     autocomplete,
     number,
     select,
+    date,
 });
