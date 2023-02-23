@@ -23,6 +23,9 @@ async function date(message: string, optional = false) {
         name: key,
         message: `${message} (${placeholder})`,
         result: (value: string) => {
+            if (!value) {
+                return undefined as any;
+            }
             const year = new Date().getFullYear();
             return `${year}/${value}`;
         },

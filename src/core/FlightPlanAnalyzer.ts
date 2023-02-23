@@ -40,11 +40,17 @@ export class FlightPlanAnalyzer {
         this.maxDay = maxDay;
     }
 
-    setStartDate(date: Date) {
+    setStartDate(date: Date | undefined) {
+        if (!date) {
+            return;
+        }
         this.startDate = date;
     }
 
-    setEndDate(date: Date) {
+    setEndDate(date: Date | undefined) {
+        if (!date) {
+            return;
+        }
         this.endDate = date;
     }
 
