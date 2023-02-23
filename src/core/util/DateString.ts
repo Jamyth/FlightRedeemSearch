@@ -25,14 +25,14 @@ export class DateString {
     }
 
     toDate(): Date {
-        return new Date(this.toFormatString());
+        return new Date(this.toString());
     }
 
-    toFormatString() {
+    toString() {
         return DateUtil.chunkDateString(this.dateString).join("/");
     }
 
-    toString(): string {
+    toKey(): string {
         return this.dateString;
     }
 }

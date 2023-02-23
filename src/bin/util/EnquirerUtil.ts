@@ -96,9 +96,23 @@ async function select(message: string, choices: string[], initial?: string): Pro
     return (answer as any)[key];
 }
 
+async function multiple(message: string, choices: string[], initial?: string[]): Promise<string[]> {
+    const key = "multiple";
+    const answer = await prompt({
+        type: "multiselect",
+        name: key,
+        message,
+        choices,
+        initial: initial as any,
+    });
+
+    return (answer as any)[key];
+}
+
 export const EnquirerUtil = Object.freeze({
     autocomplete,
     number,
     select,
     date,
+    multiple,
 });

@@ -7,17 +7,20 @@ import {
     FlightAvailability,
     TranslateUtil,
 } from "../core";
-import { DateUtil, PromiseUtil } from "@iamyth/util";
+import { PromiseUtil } from "@iamyth/util";
 import { Spinner } from "./util/decorator/Spinner";
 import { EnquirerUtil } from "./util/EnquirerUtil";
 import { BasicPromptStrategy } from "./PromptStrategies/BasicPromptStrategy";
 import { DateRangePromptStrategy } from "./PromptStrategies/DateRangePromptStrategy";
 import { MinMaxDaysPromptStrategy } from "./PromptStrategies/MinMaxDaysPromptStrategy";
+import { MinMaxDaysWithWeekdayPreferencePromptStrategy } from "./PromptStrategies/MinMaxDaysWithWeekdayPreferencePromptStrategy";
+import { WeekdayPreferencePromptStrategy } from "./PromptStrategies/WeekdayPreferencePromptStrategy";
 import { CSVUtil } from "./util/CSVUtil";
+import { DateUtil } from "../core/util/DateUtil";
 
 export class FlightSearcherCLI {
     private flightSearcher: FlightSearcher | null;
-    private flightAnalyzer: FlightPlanAnalyzer | null;
+    private flightAnalyzer: FlightPlanAnalyzer;
     private analyzedFlights: FlightInfo[];
     private flightAvailability: FlightAvailability | null;
 
@@ -30,7 +33,7 @@ export class FlightSearcherCLI {
 
     constructor() {
         this.flightSearcher = null;
-        this.flightAnalyzer = null;
+        this.flightAnalyzer = new FlightPlanAnalyzer();
         this.analyzedFlights = [];
         this.flightAvailability = null;
     }
@@ -98,29 +101,27 @@ export class FlightSearcherCLI {
         await PromiseUtil.sleep(1000);
         const enableAdvanceSearch = await EnquirerUtil.select("Enable Advance Search ?", ["Yes", "No"]);
         this.blankLn();
-        if (enableAdvanceSearch === "No") {
-            return;
-        }
-        const strategies = {
-            [BasicPromptStrategy.name]: BasicPromptStrategy,
-            [DateRangePromptStrategy.name]: DateRangePromptStrategy,
-            [MinMaxDaysPromptStrategy.name]: MinMaxDaysPromptStrategy,
-        };
 
-        const strategyName = await EnquirerUtil.select("Please Select Search Algorithm", Object.keys(strategies));
-        this.blankLn();
-        const strategy = new strategies[strategyName]();
-        const query = await strategy.run();
-        this.flightAnalyzer = new FlightPlanAnalyzer(query);
+        if (enableAdvanceSearch === "Yes") {
+            const strategies = {
+                [BasicPromptStrategy.name]: BasicPromptStrategy,
+                [DateRangePromptStrategy.name]: DateRangePromptStrategy,
+                [MinMaxDaysPromptStrategy.name]: MinMaxDaysPromptStrategy,
+                [MinMaxDaysWithWeekdayPreferencePromptStrategy.name]: MinMaxDaysWithWeekdayPreferencePromptStrategy,
+                [WeekdayPreferencePromptStrategy.name]: WeekdayPreferencePromptStrategy,
+            };
+
+            const strategyName = await EnquirerUtil.select("Please Select Search Algorithm", Object.keys(strategies));
+            this.blankLn();
+            const strategy = new strategies[strategyName]();
+            const query = await strategy.run();
+            this.flightAnalyzer.setQuery(query);
+        }
     }
 
     private async analyzeFlights() {
         await PromiseUtil.sleep(1000);
         const info = this.fs.info();
-        if (!this.flightAnalyzer) {
-            throw new Error("FlightAnalyzer is not initialized");
-        }
-
         const { departure, arrival } = this.flightAvailability!;
         const flights = this.flightAnalyzer.analyze(departure, arrival);
         this.analyzedFlights = flights;
@@ -146,7 +147,7 @@ export class FlightSearcherCLI {
         }
         await PromiseUtil.sleep(1000);
         const save = await EnquirerUtil.select("Do you want to export to .csv ?", ["Yes", "No"], "No");
-
+        this.blankLn();
         if (save === "No") {
             return;
         }
@@ -217,10 +218,20 @@ export class FlightSearcherCLI {
     }
 
     private formatFlight(flight: FlightInfo, index: number) {
+        const departureWeekday = DateUtil.getWeekday(flight.departure.date.toDate());
+        const arrivalWeekday = DateUtil.getWeekday(flight.arrival.date.toDate());
+        const departureWeekdayShortName = departureWeekday.slice(0, 3);
+        const arrivalWeekdayShortName = arrivalWeekday.slice(0, 3);
         console.info("FLIGHT ", index + 1);
         console.info("=============================");
-        console.info("DEPART ON    : ", `${flight.departure.date} (${flight.departure.availability})`);
-        console.info("RETURN ON    : ", `${flight.arrival.date} (${flight.arrival.availability})`);
+        console.info(
+            "DEPART ON    : ",
+            `${flight.departure.date} ${departureWeekdayShortName} (${flight.departure.availability})`,
+        );
+        console.info(
+            "RETURN ON    : ",
+            `${flight.arrival.date} ${arrivalWeekdayShortName} (${flight.arrival.availability})`,
+        );
         console.info("DAYS         : ", `${flight.days} (d)`);
         this.blankLn();
     }

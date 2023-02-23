@@ -1,6 +1,11 @@
 import { FlightPlanQueryBuilder } from "../../core";
 import { EnquirerUtil } from "../util/EnquirerUtil";
 
+/**
+ * Attention:
+ * This is coupled with FlightPlanQueryBuilder
+ * for integration of Enquirer
+ */
 export class AdvancePrompt {
     private queryBuilder: FlightPlanQueryBuilder;
 
@@ -29,12 +34,28 @@ export class AdvancePrompt {
 
     async promptDepartingDate() {
         const departingDate = await EnquirerUtil.date("What is your starting date ?", true);
+        this.println();
         this.queryBuilder.withDepartureDate(departingDate);
     }
 
     async promptReturningDate() {
         const returningDate = await EnquirerUtil.date("What is your starting date ?", true);
+        this.println();
         this.queryBuilder.withArrivalDate(returningDate);
+    }
+
+    async promptPreferDepartureWeekday() {
+        const options = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+        const selections = await EnquirerUtil.multiple("Prefer Departure Weekday", options);
+        this.println();
+        this.queryBuilder.withPreferDepartureWeekday(selections as any);
+    }
+
+    async promptPreferArrivalWeekday() {
+        const options = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+        const selections = await EnquirerUtil.multiple("Prefer Arrival Weekday", options);
+        this.println();
+        this.queryBuilder.withPreferArrivalWeekday(selections as any);
     }
 
     getQuery() {

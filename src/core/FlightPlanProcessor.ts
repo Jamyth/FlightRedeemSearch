@@ -1,9 +1,13 @@
 import { AvailabilityAJAXResponse$Availability as Availability, AvailabilityTypeView } from "./type/api";
 import { DateString } from "./util/DateString";
 
+interface ProcessedFlightAvailability extends Omit<Availability, "date"> {
+    date: DateString;
+}
+
 export interface FlightInfo {
-    departure: Availability;
-    arrival: Availability;
+    departure: ProcessedFlightAvailability;
+    arrival: ProcessedFlightAvailability;
     days: number;
 }
 
@@ -31,7 +35,7 @@ export class FlightPlanProcessor {
 
             for (let period = 1; period <= 180; period++) {
                 const arrivalDateString = departureDateString.getNextDateStringByPeriod(period);
-                const arrivalDataKey = arrivalDateString.toString();
+                const arrivalDataKey = arrivalDateString.toKey();
 
                 if (!arrivalDateSet.has(arrivalDataKey)) {
                     continue;
@@ -39,11 +43,11 @@ export class FlightPlanProcessor {
 
                 const flightInfo: FlightInfo = {
                     departure: {
-                        date: departureDateString.toFormatString(),
+                        date: departureDateString,
                         availability: this.departureFlightData[departureDataKey] as AvailabilityTypeView,
                     },
                     arrival: {
-                        date: arrivalDateString.toFormatString(),
+                        date: arrivalDateString,
                         availability: this.arrivalFlightData[arrivalDataKey] as AvailabilityTypeView,
                     },
                     days: period,

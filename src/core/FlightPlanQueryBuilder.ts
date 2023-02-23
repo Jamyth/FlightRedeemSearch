@@ -1,10 +1,12 @@
-import { DateUtil } from "./util/DateUtil";
+import { DateUtil, Weekday } from "./util/DateUtil";
 
 export interface FlightPlanQuery {
     minDays: number;
     maxDays: number;
     departureDate: Date;
     arrivalDate: Date;
+    preferDepartureWeekday: Weekday[];
+    preferArrivalWeekday: Weekday[];
 }
 
 export class FlightPlanQueryBuilder {
@@ -16,6 +18,8 @@ export class FlightPlanQueryBuilder {
             maxDays: 180,
             departureDate: DateUtil.today("day-start"),
             arrivalDate: DateUtil.daysAfterToday(180, "day-end"),
+            preferDepartureWeekday: [],
+            preferArrivalWeekday: [],
         };
     }
 
@@ -36,6 +40,16 @@ export class FlightPlanQueryBuilder {
 
     withArrivalDate(arrivalDate: Date | undefined) {
         this.query.arrivalDate = arrivalDate ?? DateUtil.daysAfterToday(180, "day-end");
+        return this;
+    }
+
+    withPreferDepartureWeekday(weekdays: Weekday[]) {
+        this.query.preferDepartureWeekday = weekdays;
+        return this;
+    }
+
+    withPreferArrivalWeekday(weekdays: Weekday[]) {
+        this.query.preferArrivalWeekday = weekdays;
         return this;
     }
 

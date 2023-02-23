@@ -1,5 +1,7 @@
 import { DateUtil as IamythDateUtil, ArrayUtil } from "@iamyth/util";
 
+export type Weekday = "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday";
+
 function getDateOfTheMonth(year: number, month: number) {
     if (month > 12 || month <= 0) {
         throw new Error("[DateUtil]: getDateOfTheMonth(): month should be in between 1 - 12");
@@ -54,6 +56,29 @@ function compare(dateA: Date, dateB: Date): "after" | "before" | "same" {
     return "same";
 }
 
+function getWeekday(date: Date): Weekday {
+    const day = date.getDay();
+
+    switch (day) {
+        case 1:
+            return "Monday";
+        case 2:
+            return "Tuesday";
+        case 3:
+            return "Wednesday";
+        case 4:
+            return "Thursday";
+        case 5:
+            return "Friday";
+        case 6:
+            return "Saturday";
+        case 0:
+            return "Sunday";
+        default:
+            throw new Error(`[DateUtil]: getWeekDay: invalid weekday: reading ${day}`);
+    }
+}
+
 export const DateUtil = Object.freeze({
     ...IamythDateUtil,
     getDateOfTheMonth,
@@ -61,4 +86,5 @@ export const DateUtil = Object.freeze({
     getDateKey,
     zeroPad,
     compare,
+    getWeekday,
 });
