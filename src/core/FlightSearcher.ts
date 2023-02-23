@@ -5,7 +5,7 @@ import {
     AvailabilityTypeView,
     CabinClass,
     GetAirportAJAXResponse$Airport as Airport,
-    AvailabilityAJAXResponse$Availability as FlightAvailability,
+    AvailabilityAJAXResponse$Availability as Availability,
 } from "./type/api";
 import { Retry } from "./util/decorators/Retry";
 
@@ -17,6 +17,15 @@ interface FlightSearcherInfo {
     cabinClass: string;
     passengers: number;
     milesRequired: Record<CabinClass, number | string>;
+}
+
+type FlightData = {
+    [key: string]: AvailabilityTypeView;
+};
+
+export interface FlightAvailability {
+    departure: FlightData;
+    arrival: FlightData;
 }
 
 export class FlightSearcher {
@@ -110,7 +119,7 @@ export class FlightSearcher {
     }
 
     @Retry(3)
-    async getFlightAvailability() {
+    async getFlightAvailability(): Promise<FlightAvailability | null> {
         if (![this.cabinClass, this.passengers, this.origin, this.destination].every(Boolean)) {
             return null;
         }
@@ -145,7 +154,7 @@ export class FlightSearcher {
             (_) => _.availability !== AvailabilityTypeView.NA,
         );
 
-        const mapper = (item: FlightAvailability): [string, AvailabilityTypeView] => {
+        const mapper = (item: Availability): [string, AvailabilityTypeView] => {
             return [item.date, item.availability];
         };
 

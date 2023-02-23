@@ -4,18 +4,22 @@ import {
     CabinClassTranslationMap,
     FlightPlanAnalyzer,
     FlightInfo,
+    FlightAvailability,
     TranslateUtil,
 } from "../core";
 import { DateUtil, PromiseUtil } from "@iamyth/util";
 import { Spinner } from "./util/decorator/Spinner";
 import { EnquirerUtil } from "./util/EnquirerUtil";
+import { BasicPromptStrategy } from "./PromptStrategies/BasicPromptStrategy";
+import { DateRangePromptStrategy } from "./PromptStrategies/DateRangePromptStrategy";
+import { MinMaxDaysPromptStrategy } from "./PromptStrategies/MinMaxDaysPromptStrategy";
 import { CSVUtil } from "./util/CSVUtil";
 
 export class FlightSearcherCLI {
     private flightSearcher: FlightSearcher | null;
-    private flightAnalyzer: FlightPlanAnalyzer;
-    private enableAdvanceSearch: boolean;
+    private flightAnalyzer: FlightPlanAnalyzer | null;
     private analyzedFlights: FlightInfo[];
+    private flightAvailability: FlightAvailability | null;
 
     private get fs() {
         if (!this.flightSearcher) {
@@ -26,9 +30,9 @@ export class FlightSearcherCLI {
 
     constructor() {
         this.flightSearcher = null;
-        this.flightAnalyzer = new FlightPlanAnalyzer();
-        this.enableAdvanceSearch = false;
+        this.flightAnalyzer = null;
         this.analyzedFlights = [];
+        this.flightAvailability = null;
     }
 
     async run() {
@@ -40,12 +44,7 @@ export class FlightSearcherCLI {
             await this.promptCabinClass();
             await this.promptPassenger();
             await this.fetchFlightCabinInfo();
-            await this.promptAdvanceSearch();
-            if (this.enableAdvanceSearch) {
-                await this.promptDays();
-                await this.promptStartDate();
-                await this.promptEndDate();
-            }
+            await this.advanceQueryPrompt();
             await this.searchFlights();
             await this.analyzeFlights();
             await this.promptSaveCSV();
@@ -95,40 +94,35 @@ export class FlightSearcherCLI {
         this.blankLn();
     }
 
-    private async promptAdvanceSearch() {
+    private async advanceQueryPrompt() {
         await PromiseUtil.sleep(1000);
         const enableAdvanceSearch = await EnquirerUtil.select("Enable Advance Search ?", ["Yes", "No"]);
-        this.enableAdvanceSearch = enableAdvanceSearch === "Yes";
-    }
-
-    private async promptDays() {
-        const minDay = await EnquirerUtil.number("How many days do you want at least ?", {
-            min: 1,
-        });
         this.blankLn();
-        const maxDay = await EnquirerUtil.number("How many days do you want at most ?", {
-            min: minDay,
-        });
+        if (enableAdvanceSearch === "No") {
+            return;
+        }
+        const strategies = {
+            [BasicPromptStrategy.name]: BasicPromptStrategy,
+            [DateRangePromptStrategy.name]: DateRangePromptStrategy,
+            [MinMaxDaysPromptStrategy.name]: MinMaxDaysPromptStrategy,
+        };
+
+        const strategyName = await EnquirerUtil.select("Please Select Search Algorithm", Object.keys(strategies));
         this.blankLn();
-
-        this.flightAnalyzer.setMinDay(minDay);
-        this.flightAnalyzer.setMaxDay(maxDay);
-    }
-
-    private async promptStartDate() {
-        const startingDate = await EnquirerUtil.date("What is your starting date ?", true);
-        this.flightAnalyzer.setStartDate(startingDate);
-    }
-
-    private async promptEndDate() {
-        const returningDate = await EnquirerUtil.date("What is your returning date ?", true);
-        this.flightAnalyzer.setEndDate(returningDate);
+        const strategy = new strategies[strategyName]();
+        const query = await strategy.run();
+        this.flightAnalyzer = new FlightPlanAnalyzer(query);
     }
 
     private async analyzeFlights() {
         await PromiseUtil.sleep(1000);
         const info = this.fs.info();
-        const flights = this.flightAnalyzer.analyze();
+        if (!this.flightAnalyzer) {
+            throw new Error("FlightAnalyzer is not initialized");
+        }
+
+        const { departure, arrival } = this.flightAvailability!;
+        const flights = this.flightAnalyzer.analyze(departure, arrival);
         this.analyzedFlights = flights;
 
         console.info("----------- Flight Info -----------");
@@ -203,8 +197,7 @@ export class FlightSearcherCLI {
         if (!flights) {
             throw new Error("Flights not found...");
         }
-        this.flightAnalyzer.setDepartureData(flights.departure);
-        this.flightAnalyzer.setArrivalData(flights.arrival);
+        this.flightAvailability = flights;
     }
 
     @Spinner("Retrieving Destination Airports...")
@@ -214,11 +207,6 @@ export class FlightSearcherCLI {
 
     @Spinner("Initializing Flight Searcher...")
     private async initFlightSearcher() {
-        // TODO/Jamyth optimization
-        // if (this.flightSearcher !== null) {
-        //     return;
-        // }
-
         const fs = new FlightSearcher();
         await fs.init();
         this.flightSearcher = fs;

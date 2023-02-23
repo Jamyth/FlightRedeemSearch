@@ -25,7 +25,7 @@ function zeroPad(value: number) {
     return value.toString().padStart(2, "0");
 }
 
-function compare(dateA: Date, dateB: Date): "greater" | "less" | "equal" {
+function compare(dateA: Date, dateB: Date): "after" | "before" | "same" {
     const yearA = dateA.getFullYear();
     const yearB = dateB.getFullYear();
     const monthA = dateA.getMonth();
@@ -34,24 +34,24 @@ function compare(dateA: Date, dateB: Date): "greater" | "less" | "equal" {
     const dayB = dateB.getDate();
 
     if (yearA > yearB) {
-        return "greater";
+        return "after";
     } else if (yearB > yearA) {
-        return "less";
+        return "before";
     }
 
     if (monthA > monthB) {
-        return "greater";
+        return "after";
     } else if (monthB > monthA) {
-        return "less";
+        return "before";
     }
 
     if (dayA > dayB) {
-        return "greater";
+        return "after";
     } else if (dayB > dayA) {
-        return "less";
+        return "before";
     }
 
-    return "equal";
+    return "same";
 }
 
 export const DateUtil = Object.freeze({

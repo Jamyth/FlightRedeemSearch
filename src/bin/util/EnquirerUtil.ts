@@ -15,7 +15,10 @@ interface NumberOptions {
     initial?: number;
 }
 
-async function date(message: string, optional = false) {
+async function date<Optional extends boolean = false>(
+    message: string,
+    optional: Optional,
+): Promise<Optional extends true ? Date | undefined : Date> {
     const placeholder = "MM/DD";
     const key = "date";
     const answer = await prompt({
@@ -24,7 +27,7 @@ async function date(message: string, optional = false) {
         message: `${message} (${placeholder})`,
         result: (value: string) => {
             if (!value) {
-                return undefined as any;
+                return "";
             }
             const year = new Date().getFullYear();
             return `${year}/${value}`;
@@ -41,7 +44,10 @@ async function date(message: string, optional = false) {
         },
     });
     const value = (answer as any)[key];
-    console.info(value);
+
+    if (!value && optional) {
+        return undefined as any;
+    }
     return new Date(value);
 }
 
