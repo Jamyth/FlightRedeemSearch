@@ -1,4 +1,4 @@
-import { FlightPlanQuery } from "../../core";
+import { FlightPlanQuery } from "../../../core";
 import { PromptStrategy } from "./PromptStrategy";
 
 export class WeekdayPreferencePromptStrategy extends PromptStrategy {

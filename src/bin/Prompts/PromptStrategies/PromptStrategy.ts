@@ -1,5 +1,5 @@
-import type { FlightPlanQuery } from "../../core";
-import { AdvancePrompt } from "./AdvancePrompt";
+import type { FlightPlanQuery } from "../../../core";
+import { AdvancePrompt } from "../AdvancePrompt";
 
 export abstract class PromptStrategy {
     abstract displayName: string;

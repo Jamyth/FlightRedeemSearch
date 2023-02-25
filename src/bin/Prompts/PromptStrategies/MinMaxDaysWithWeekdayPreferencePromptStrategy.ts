@@ -1,15 +1,12 @@
-import { FlightPlanQuery } from "../../core";
+import { FlightPlanQuery } from "../../../core";
 import { PromptStrategy } from "./PromptStrategy";
 
-export class BasicPromptStrategy extends PromptStrategy {
-    displayName: string = "BasicPromptStrategy";
-
+export class MinMaxDaysWithWeekdayPreferencePromptStrategy extends PromptStrategy {
+    displayName: string = "MinMaxDaysWithWeekdayPreferencePromptStrategy";
     run(): Promise<FlightPlanQuery> {
         return this.createPrompts(async (prompt) => {
             await prompt.promptMinDay();
             await prompt.promptMaxDay();
-            await prompt.promptDepartingDate();
-            await prompt.promptReturningDate();
             await prompt.promptPreferDepartureWeekday();
             await prompt.promptPreferArrivalWeekday();
         });

@@ -10,11 +10,11 @@ import {
 import { PromiseUtil } from "@iamyth/util";
 import { Spinner } from "./util/decorator/Spinner";
 import { EnquirerUtil } from "./util/EnquirerUtil";
-import { BasicPromptStrategy } from "./PromptStrategies/BasicPromptStrategy";
-import { DateRangePromptStrategy } from "./PromptStrategies/DateRangePromptStrategy";
-import { MinMaxDaysPromptStrategy } from "./PromptStrategies/MinMaxDaysPromptStrategy";
-import { MinMaxDaysWithWeekdayPreferencePromptStrategy } from "./PromptStrategies/MinMaxDaysWithWeekdayPreferencePromptStrategy";
-import { WeekdayPreferencePromptStrategy } from "./PromptStrategies/WeekdayPreferencePromptStrategy";
+import { BasicPromptStrategy } from "./Prompts/PromptStrategies/BasicPromptStrategy";
+import { DateRangePromptStrategy } from "./Prompts/PromptStrategies/DateRangePromptStrategy";
+import { MinMaxDaysPromptStrategy } from "./Prompts/PromptStrategies/MinMaxDaysPromptStrategy";
+import { MinMaxDaysWithWeekdayPreferencePromptStrategy } from "./Prompts/PromptStrategies/MinMaxDaysWithWeekdayPreferencePromptStrategy";
+import { WeekdayPreferencePromptStrategy } from "./Prompts/PromptStrategies/WeekdayPreferencePromptStrategy";
 import { CSVUtil } from "./util/CSVUtil";
 import { DateUtil } from "../core/util/DateUtil";
 
