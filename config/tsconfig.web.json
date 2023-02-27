@@ -12,7 +12,8 @@
 
         "jsx": "react",
 
-        "importsNotUsedAsValues": "preserve",
+        "preserveValueImports": true,
+        "importsNotUsedAsValues": "error",
         "isolatedModules": true,
         "paths": {
             "@core/*": ["../../core/*"]

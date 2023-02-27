@@ -3,8 +3,13 @@
     "extends": "./tsconfig.base.json",
     "compilerOptions": {
         "target": "ES5",
+        "module": "ESNext",
         "noEmit": true,
         "rootDir": "../script"
     },
-    "include": ["../script"]
+    "include": ["../script"],
+    "ts-node": {
+        "esm": true,
+        "experimentalSpecifierResolution": "node"
+    }
 }

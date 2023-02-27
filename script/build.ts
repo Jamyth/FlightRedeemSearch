@@ -2,7 +2,7 @@ import { ViteBuilder } from "vite-runner";
 import path from "path";
 
 new ViteBuilder({
-    projectDirectory: path.join(__dirname, "../src/web"),
+    rootDirectory: path.join(__dirname, "../src/web"),
     outDirectory: path.join(__dirname, "../build"),
     tsconfigPath: path.join(__dirname, "../config/tsconfig.src.json"),
     pathResolver: [
