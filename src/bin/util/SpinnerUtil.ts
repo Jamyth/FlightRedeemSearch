@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-ignore -- no type provided
 import MultiSpinner from "multispinner";
 
 function create(key: string, message: string) {

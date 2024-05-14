@@ -1,4 +1,5 @@
-import { DateUtil, Weekday } from "./util/DateUtil";
+import type { Weekday } from "./util/DateUtil.js";
+import { DateUtil } from "./util/DateUtil.js";
 
 export interface FlightPlanQuery {
     minDays: number;

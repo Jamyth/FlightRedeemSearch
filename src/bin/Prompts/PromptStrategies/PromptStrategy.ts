@@ -1,5 +1,5 @@
-import type { FlightPlanQuery } from "../../../core";
-import { AdvancePrompt } from "../AdvancePrompt";
+import type { FlightPlanQuery } from "../../../core/index.js";
+import { AdvancePrompt } from "../AdvancePrompt.js";
 
 export abstract class PromptStrategy {
     abstract displayName: string;
@@ -11,8 +11,7 @@ export abstract class PromptStrategy {
             await runner(prompt);
         } catch (error) {
             console.error(`[${this.displayName}]: QueryFailed`);
-        } finally {
-            return prompt.getQuery();
         }
+        return prompt.getQuery();
     }
 }

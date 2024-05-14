@@ -1,7 +1,8 @@
-import { FlightPlanQueryBuilder } from "./FlightPlanQueryBuilder";
-import { FlightPlanProcessor, FlightInfo } from "./FlightPlanProcessor";
-import { FlightPlanQuery } from "./FlightPlanQueryBuilder";
-import { DateUtil } from "./util/DateUtil";
+import type { FlightPlanQuery } from "./FlightPlanQueryBuilder.js";
+import { FlightPlanQueryBuilder } from "./FlightPlanQueryBuilder.js";
+import type { FlightInfo } from "./FlightPlanProcessor.js";
+import { FlightPlanProcessor } from "./FlightPlanProcessor.js";
+import { DateUtil } from "./util/DateUtil.js";
 
 export class FlightPlanAnalyzer {
     private query: FlightPlanQuery;

@@ -1,4 +1,4 @@
-import { DateUtil } from "./DateUtil";
+import { DateUtil } from "./DateUtil.js";
 
 export class DateString {
     constructor(private dateString: string) {}

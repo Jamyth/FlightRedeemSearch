@@ -1,4 +1,4 @@
-import { CabinClass } from "../type/api";
+import { CabinClass } from "../type/api.js";
 
 export const CabinClassTranslationMap: Record<string, CabinClass> = {
     "First Class": CabinClass.FIRST,

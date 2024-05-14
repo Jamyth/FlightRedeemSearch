@@ -1,5 +1,5 @@
-import { AvailabilityAJAXResponse$Availability as Availability, AvailabilityTypeView } from "./type/api";
-import { DateString } from "./util/DateString";
+import type { AvailabilityAJAXResponse$Availability as Availability, AvailabilityTypeView } from "./type/api.js";
+import { DateString } from "./util/DateString.js";
 
 interface ProcessedFlightAvailability extends Omit<Availability, "date"> {
     date: DateString;

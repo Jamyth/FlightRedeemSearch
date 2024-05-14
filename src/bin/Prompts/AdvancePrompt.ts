@@ -1,5 +1,5 @@
-import { FlightPlanQueryBuilder } from "../../core";
-import { EnquirerUtil } from "../util/EnquirerUtil";
+import { FlightPlanQueryBuilder } from "../../core/index.js";
+import { EnquirerUtil } from "../util/EnquirerUtil.js";
 
 /**
  * Attention:
@@ -39,7 +39,7 @@ export class AdvancePrompt {
     }
 
     async promptReturningDate() {
-        const returningDate = await EnquirerUtil.date("What is your starting date ?", true);
+        const returningDate = await EnquirerUtil.date("What is your returning date ?", true);
         this.println();
         this.queryBuilder.withArrivalDate(returningDate);
     }

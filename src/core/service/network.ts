@@ -1,24 +1,30 @@
 import type { AxiosError, AxiosRequestConfig, Method } from "axios";
 import axios from "axios";
-import { APIException, NetworkConnectionException } from "./Exceptions";
+import { APIException, NetworkConnectionException } from "./Exceptions.js";
 
 type PathParams<T extends string> = string extends T
     ? {
           [key: string]: string | number;
       }
     : T extends `${infer _}://${infer Rest}`
-    ? PathParams<Rest>
-    : T extends `${infer _}:${infer Param}/${infer Rest}`
-    ? {
-          [k in Param | keyof PathParams<Rest>]: string | number;
-      }
-    : T extends `${infer _}:${infer Param}`
-    ? {
-          [k in Param]: string | number;
-      }
-    : object;
+      ? PathParams<Rest>
+      : T extends `${infer _}:${infer Param}/${infer Rest}`
+        ? {
+              [k in Param | keyof PathParams<Rest>]: string | number;
+          }
+        : T extends `${infer _}:${infer Param}`
+          ? {
+                [k in Param]: string | number;
+            }
+          : object;
 
 const APPLICATION_JSON = "application/json";
+
+export interface APIErrorResponse {
+    id?: string | null;
+    errorCode?: string | null;
+    message?: string | null;
+}
 
 function parseWithDate(data: string) {
     const ISO_DATE_FORMAT = /^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d(\.\d+)?(Z|[+-][01]\d:[0-5]\d)$/;
@@ -44,8 +50,8 @@ axios.interceptors.response.use(
     (e) => {
         // eslint-disable-next-line no-prototype-builtins -- builtins check is necessary
         if (e && typeof e === "object" && e.hasOwnProperty("isAxiosError")) {
-            const error = e as AxiosError;
-            const requestURL = error.config.url || "-";
+            const error = e as AxiosError<APIErrorResponse | undefined>;
+            const requestURL = error.config?.url || "-";
             if (error.response) {
                 // Try to get server error message/ID/code from response
                 const responseData = error.response.data;

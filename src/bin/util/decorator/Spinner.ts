@@ -1,4 +1,4 @@
-import { SpinnerUtil } from "../SpinnerUtil";
+import { SpinnerUtil } from "../SpinnerUtil.js";
 
 export function Spinner(message: string): MethodDecorator {
     return (key, target, descriptor) => {

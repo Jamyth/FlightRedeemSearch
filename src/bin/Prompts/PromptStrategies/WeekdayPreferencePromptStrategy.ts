@@ -1,5 +1,5 @@
-import { FlightPlanQuery } from "../../../core";
-import { PromptStrategy } from "./PromptStrategy";
+import type { FlightPlanQuery } from "../../../core/index.js";
+import { PromptStrategy } from "./PromptStrategy.js";
 
 export class WeekdayPreferencePromptStrategy extends PromptStrategy {
     displayName: string = "WeekdayPreferencePromptStrategy";

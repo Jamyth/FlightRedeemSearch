@@ -1,13 +1,15 @@
-import { ArrayUtil, DateUtil } from "@iamyth/util";
-import { TranslateUtil } from "./util/TranslateUtil";
-import { CathayPacificAJAXService } from "./service/CathayPacificAJAXService";
-import {
-    AvailabilityTypeView,
-    CabinClass,
+import * as iamythUtil from "./util/IamythUtil.cjs";
+import { TranslateUtil } from "./util/TranslateUtil.js";
+import { CathayPacificAJAXService } from "./service/CathayPacificAJAXService.js";
+import type {
     GetAirportAJAXResponse$Airport as Airport,
     AvailabilityAJAXResponse$Availability as Availability,
-} from "./type/api";
-import { Retry } from "./util/decorators/Retry";
+} from "./type/api.js";
+import { AvailabilityTypeView, CabinClass } from "./type/api.js";
+import { Retry } from "./util/decorators/Retry.js";
+
+// @ts-expect-error -- package issue
+const { ArrayUtil, DateUtil } = iamythUtil;
 
 interface FlightSearcherInfo {
     from: string;

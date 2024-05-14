@@ -1,11 +1,12 @@
-import { prompt } from "enquirer";
-// @ts-ignore
-import NumeralInput from "enquirer/lib/prompts/numeral";
-// @ts-ignore
-import AutoComplete from "enquirer/lib/prompts/autocomplete";
-import type { AutoComplete as AutoCompleteType } from "../types/AutoComplete";
-import type { NumeralInput as NumeralInputType } from "../types/NumeralInput";
+import * as enquirer from "enquirer";
+// @ts-ignore -- no type
+import NumeralInput from "enquirer/lib/prompts/numeral.js";
+// @ts-ignore -- no type
+import AutoComplete from "enquirer/lib/prompts/autocomplete.js";
+import type { AutoComplete as AutoCompleteType } from "../types/AutoComplete.js";
+import type { NumeralInput as NumeralInputType } from "../types/NumeralInput.js";
 
+const { prompt } = enquirer.default;
 const _AutoComplete = AutoComplete as typeof AutoCompleteType;
 const _NumeralInput = NumeralInput as typeof NumeralInputType;
 

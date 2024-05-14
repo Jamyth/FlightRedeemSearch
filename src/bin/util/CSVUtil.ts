@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-function generate<T>(filename: string, content: string[]) {
+function generate(filename: string, content: string[]) {
     const _content = content.join("\n");
 
     const downloadDirectory = path.join(process.cwd(), "./csv");

@@ -1,5 +1,5 @@
-import { TranslateUtil } from "./util/TranslateUtil";
-import { AvailabilityTypeView, CabinClass, GetAirportAJAXResponse$Airport as Airport } from "./type/api";
+import { TranslateUtil } from "./util/TranslateUtil.js";
+import type { AvailabilityTypeView, CabinClass, GetAirportAJAXResponse$Airport as Airport } from "./type/api.js";
 
 interface FlightSearcherInfo {
     from: string;

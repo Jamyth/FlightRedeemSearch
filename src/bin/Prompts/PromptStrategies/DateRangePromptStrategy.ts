@@ -1,5 +1,5 @@
-import { PromptStrategy } from "./PromptStrategy";
-import type { FlightPlanQuery } from "../../../core";
+import { PromptStrategy } from "./PromptStrategy.js";
+import type { FlightPlanQuery } from "../../../core/index.js";
 
 export class DateRangePromptStrategy extends PromptStrategy {
     displayName: string = "DateRangePromptStrategy";

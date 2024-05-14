@@ -1,10 +1,10 @@
-import { ajax } from "./network";
+import { ajax } from "./network.js";
 import type {
     AvailabilityAJAXResponse,
     GetAirportAJAXResponse,
     CabinClass,
     GetFlightCabinInfoAJAXResponse,
-} from "../type/api";
+} from "../type/api.js";
 
 export class CathayPacificAJAXService {
     static getAirportOrigin(): Promise<GetAirportAJAXResponse> {

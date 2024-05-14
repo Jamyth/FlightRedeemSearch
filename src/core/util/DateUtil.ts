@@ -1,4 +1,7 @@
-import { DateUtil as IamythDateUtil, ArrayUtil } from "@iamyth/util";
+import * as iamythUtil from "../util/IamythUtil.cjs";
+
+// @ts-expect-error -- module issue
+const { DateUtil: IamythDateUtil, ArrayUtil } = iamythUtil;
 
 export type Weekday = "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday";
 
@@ -12,7 +15,11 @@ function getDateOfTheMonth(year: number, month: number) {
 
 function chunkDateString(dateString: string): [number, number, number] {
     const shape = [4, 2, 2];
-    return ArrayUtil.chunk(dateString.split(""), shape).map((_) => parseInt(_.join(""))) as [number, number, number];
+    return ArrayUtil.chunk(dateString.split(""), shape).map((_: string[]) => parseInt(_.join(""), 10)) as [
+        number,
+        number,
+        number,
+    ];
 }
 
 function getDateKey(date: Date = new Date()) {

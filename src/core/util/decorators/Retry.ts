@@ -1,4 +1,7 @@
-import { PromiseUtil } from "@iamyth/util";
+import * as iamythUtil from "../IamythUtil.cjs";
+
+// @ts-ignore -- package issue
+const { PromiseUtil } = iamythUtil;
 
 export function Retry(time: number = 3): MethodDecorator {
     let retried = 0;
@@ -12,8 +15,7 @@ export function Retry(time: number = 3): MethodDecorator {
 
             while (true) {
                 try {
-                    const returned = await bounded();
-                    return returned;
+                    return await bounded();
                 } catch (error) {
                     retried++;
                     if (retried > 3) {
