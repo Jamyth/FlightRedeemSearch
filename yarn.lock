@@ -188,10 +188,10 @@
   resolved "https://registry.yarnpkg.com/@iamyth/prettier-config/-/prettier-config-0.0.2.tgz#3d5d5253f68a2ba79fee03cfd641e1d725f73ef6"
   integrity sha512-5T0bAoCo/zq82X6iT4hWR4G5tldgWN/ML89YCSxrU3TOk9rvVb+d5wLStX61GbUyBthxh3/Cq45ZOll7FGLI3A==
 
-"@iamyth/util@1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@iamyth/util/-/util-1.2.1.tgz#88637c56cd50f0fb13f4fadded3e0f39fcc7e7ef"
-  integrity sha512-AhIV/eCzBB0XSzs/QbkcKVuVsM5BPAdxANOCgp8QRsJAcE5nxWj/B0k/z5NWHR2GoD3ccB3zUp1hgJEg3slNJw==
+"@iamyth/util@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@iamyth/util/-/util-2.0.0.tgz#99c94f9e93ddeb3fb670ba763d839a5e6bef6ba8"
+  integrity sha512-F55sVdLdG+9cbNuu/OAtoKhpiiI7VWk633fCkC7aJKq9KNa7tL8ByF9/P/UFth+byg7aBvk3FD/kOVZGJAITsw==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"

@@ -6,7 +6,7 @@ import {
     FlightPlanAnalyzer,
     TranslateUtil,
 } from "../core/index.js";
-import * as iamythUtil from "../core/util/IamythUtil.cjs";
+import { PromiseUtil } from "@iamyth/util";
 import { Spinner } from "./util/decorator/Spinner.js";
 import { EnquirerUtil } from "./util/EnquirerUtil.js";
 import { BasicPromptStrategy } from "./Prompts/PromptStrategies/BasicPromptStrategy.js";
@@ -16,9 +16,6 @@ import { MinMaxDaysWithWeekdayPreferencePromptStrategy } from "./Prompts/PromptS
 import { WeekdayPreferencePromptStrategy } from "./Prompts/PromptStrategies/WeekdayPreferencePromptStrategy.js";
 import { CSVUtil } from "./util/CSVUtil.js";
 import { DateUtil } from "../core/util/DateUtil.js";
-
-// @ts-expect-error -- package issue
-const { PromiseUtil } = iamythUtil;
 
 export class FlightSearcherCLI {
     private flightSearcher: FlightSearcher | null;

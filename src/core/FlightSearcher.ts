@@ -1,4 +1,4 @@
-import * as iamythUtil from "./util/IamythUtil.cjs";
+import { ArrayUtil, DateUtil } from "@iamyth/util";
 import { TranslateUtil } from "./util/TranslateUtil.js";
 import { CathayPacificAJAXService } from "./service/CathayPacificAJAXService.js";
 import type {
@@ -7,9 +7,6 @@ import type {
 } from "./type/api.js";
 import { AvailabilityTypeView, CabinClass } from "./type/api.js";
 import { Retry } from "./util/decorators/Retry.js";
-
-// @ts-expect-error -- package issue
-const { ArrayUtil, DateUtil } = iamythUtil;
 
 interface FlightSearcherInfo {
     from: string;

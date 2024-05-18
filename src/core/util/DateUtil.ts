@@ -1,7 +1,4 @@
-import * as iamythUtil from "../util/IamythUtil.cjs";
-
-// @ts-expect-error -- module issue
-const { DateUtil: IamythDateUtil, ArrayUtil } = iamythUtil;
+import { DateUtil as IamythDateUtil, ArrayUtil } from "@iamyth/util";
 
 export type Weekday = "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday";
 

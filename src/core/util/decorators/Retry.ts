@@ -1,7 +1,4 @@
-import * as iamythUtil from "../IamythUtil.cjs";
-
-// @ts-ignore -- package issue
-const { PromiseUtil } = iamythUtil;
+import { PromiseUtil } from "@iamyth/util";
 
 export function Retry(time: number = 3): MethodDecorator {
     let retried = 0;
